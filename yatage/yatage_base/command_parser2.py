@@ -20,6 +20,8 @@ from pyparsing import Word, Optional, ZeroOrMore, Group, ParseException, oneOf, 
 
 # define some strings to use later, when describing valid lists
 # of characters for chemical symbols and numbers
+from yatage.yatage_base.parser.LEXXER import IGNOREABLES, TARGET, GO
+
 caps = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 lowers = caps.lower()
 digits = "0123456789"
@@ -39,7 +41,7 @@ def target_action(tokens):
 
 
 
-look_command = Group(Literal('look')+Optional(Suppress(oneOf('at towards to',1,0)))+Suppress(IGNOREABLES)+Optional(TARGET("LOOK_TARGET"),{'target':'CURRENT_ROOM'}))("LOOK")
+look_command = Group(Literal('look')+Optional(Suppress(oneOf('at towards to',1,0)))+Suppress(IGNOREABLES)+Optional(TARGET,{'target':'CURRENT_ROOM'}))
 move_command = Or([Group(GO + Suppress(IGNOREABLES) + DIRECTION),DIRECTION])("GO")
 take_command = Group(TAKE + Suppress(IGNOREABLES) + OPTIONAL_COUNT + TARGET("TAKE_TARGET") )("TAKE")
 wear_command = Group(WEAR + Suppress(IGNOREABLES) + TARGET("WEAR_TARGET"))
