@@ -15,9 +15,11 @@ PUT = MatchFirst([Keyword(w) for w in ["place","give","put","hand","offer"]])
 WEAR = MatchFirst([Keyword(w) for w in ["wear","equip","put on"]])
 USE = MatchFirst([Keyword(w) for w in ["use","use"]])
 GO = MatchFirst([Keyword("go"),Keyword("move"),Keyword("exit"),Keyword("navigate")])
+
+ACTIVATE = MatchFirst([Keyword(w) for w in ['activate','turn on','touch']])
+DEACTIVATE = MatchFirst([Keyword(w) for w in ['deactivate','turn off','touch']])
+
 NORTH = MatchFirst([Keyword("n"),Keyword("north"),Keyword("up")])
-
-
 SOUTH = MatchFirst([Keyword(w) for w in ["s","south","down"]])
 EAST = MatchFirst([Keyword(w) for w in ["e","east","right"]])
 WEST = MatchFirst([Keyword(w) for w in ["w","west","left"]])

@@ -1,6 +1,7 @@
 from pyparsing import Group, Optional, Suppress, oneOf, Literal as L, Or, MatchFirst, Literal
 
-from yatage.yatage_base.parser.LEXXER import IGNOREABLES, TARGET, GO, DIRECTION, TAKE, COUNT, WEAR, DROP, PUT, USE
+from yatage.yatage_base.parser.LEXXER import IGNOREABLES, TARGET, GO, DIRECTION, TAKE, COUNT, WEAR, DROP, PUT, USE, \
+    ACTIVATE, DEACTIVATE
 
 LOOK_MODIFIERS = Optional(Suppress(oneOf('at towards to', 1, 0))) + Suppress(IGNOREABLES)
 
@@ -11,6 +12,9 @@ drop_command = Group(DROP + Suppress(IGNOREABLES) + Optional(COUNT,{'count':1}) 
 wear_command = Group(WEAR + Suppress(IGNOREABLES) + TARGET)
 use_command = Group(USE + Suppress(IGNOREABLES) + TARGET + Suppress(Optional(Literal('on'))) + Suppress(IGNOREABLES) + Optional(TARGET,{'target':'CURRENT_PLAYER'}))
 put_command = Group(PUT + Suppress(IGNOREABLES) + TARGET + Suppress(IGNOREABLES)+TARGET)
+activate_command = Group(ACTIVATE + Suppress(IGNOREABLES) + TARGET)
+deactivate_command = Group(DEACTIVATE + Suppress(IGNOREABLES) + TARGET)
+activation_command = Or([activate_command,deactivate_command])
 def drop_something(tokens):
     d = {'action': 'drop'}
     d.update(tokens[0][1])
@@ -57,5 +61,9 @@ def move_somewhere(tokens):
     return [d,]
 
 move_command.setParseAction(move_somewhere)
-normal_statement = MatchFirst([look_command,wear_command,take_command,drop_command,put_command,move_command])
+
+def activation_of_something(tokens):
+    print("ACTIVATED:",tokens)
+
+normal_statement = MatchFirst([look_command,wear_command,take_command,drop_command,put_command,move_command,activation_command])
 
